@@ -28,7 +28,7 @@ export type SelectOptionType = {
   key: string | number;
 };
 
-export type FormValues = Record<string, string>;
+export type FormValues = Record<string, string | number | boolean | string[] | number[] | boolean[] | undefined | null>;
 
 export type GenericComposableFormFieldProps = {
   name: string;
@@ -201,7 +201,7 @@ export type ComposableFormFieldProps =
   | FileFormFieldProps;
 
 interface DefaultFormValues {
-  [key: string]: string | undefined;
+  [key: string]: string | number | boolean | Date | null | undefined;
 }
 export type ComposableFormProps = {
   fields: ComposableFormFieldProps[];

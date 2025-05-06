@@ -56,7 +56,7 @@ const TextFormField = <T extends string = string>({ field, error, register }: Te
           sx={{
             flex: '1 1 0'
           }}
-        >{field.label}</Box>
+        >{field.label} {field.validator.required && '*'}</Box>
       }
 
       <TextField
@@ -70,6 +70,7 @@ const TextFormField = <T extends string = string>({ field, error, register }: Te
         fullWidth
         InputProps={passwordAdornments}
         type={showPasswordHint ? 'text' : field.type}
+        label={!field.inline ? `${field.label} ${field.validator.required ? '*' : ''}` : ''}
       />
     </Box>
   )

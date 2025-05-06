@@ -30,6 +30,11 @@ const fields: ComposableFormFieldProps[] = [
     name: 'password', label: 'Password', type: 'password', validator: { required: true },
     validationMessage: 'Password is required'
   },
+  {
+    name: 'termsAccepted', label: 'I accept the terms and conditions', type: 'checkbox', 
+    validator: { required: true },
+    validationMessage: 'You must accept the terms and conditions'
+  },
 ]
 
 const args: ComposableFormProps = {

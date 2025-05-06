@@ -1,15 +1,17 @@
-import { FieldError, UseFormRegister } from 'react-hook-form';
-import { ComposableFormFieldProps, FormValues, TextLikeFormFieldProps } from './ComposableFormTypes';
-import TextFormField from './Fields/TextFormField';
-import { useMemo } from 'react';
 import { Box } from '@mui/material';
+import { useMemo } from 'react';
+import { FieldError, UseFormRegister, Control } from 'react-hook-form';
+import { CheckboxFormFieldProps, ComposableFormFieldProps, FormValues, TextLikeFormFieldProps } from './ComposableFormTypes';
+import TextFormField from './Fields/TextFormField';
+import CheckboxField from './Fields/CheckboxField';
 
 type WithName<T> = Omit<T, 'name'> & { name: string };
 
 export interface FieldRendererProps<T extends string = string> {
   field: Omit<ComposableFormFieldProps, 'name'> & { name: T },
   error?: FieldError,
-  register: UseFormRegister<FormValues>
+  register: UseFormRegister<FormValues>,
+  control: Control<FormValues>
 }
 
 function isTextLikeField(
@@ -33,11 +35,18 @@ function isNumberLikeField(
   ].includes(field.type);
 }
 
+function isCheckboxField(
+  field: WithName<ComposableFormFieldProps>
+): field is WithName<CheckboxFormFieldProps> {
+  return field.type === 'checkbox';
+}
+
 
 const FieldRenderer = <T extends string = string>({
   field,
   error,
-  register
+  register,
+  control
 }: FieldRendererProps<T>) => {
 
   const renderField = useMemo(
@@ -62,10 +71,24 @@ const FieldRenderer = <T extends string = string>({
           }
           return null;
         }
+        case "checkbox": {
+          const typedField = field as WithName<ComposableFormFieldProps>;
+          if (isCheckboxField(typedField)) {
+            return (
+              <CheckboxField
+                field={typedField}
+                register={register}
+                control={control}
+                error={error}
+              />
+            );
+          }
+          return null;
+        }
         default:
           return null;
       }
-    }, [error, field, register]
+    }, [error, field, register, control]
   );
   return (
     <Box
